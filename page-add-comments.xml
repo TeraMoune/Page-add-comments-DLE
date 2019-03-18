@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dleplugin>
+	<name>Page add comments</name>
+	<description>Отдельная страница добавления комментариев.</description>
+	<icon></icon>
+	<version></version>
+	<dleversion>13</dleversion>
+	<versioncompare>greater</versioncompare>
+	<mysqlinstall><![CDATA[]]></mysqlinstall>
+	<mysqlupgrade><![CDATA[]]></mysqlupgrade>
+	<mysqlenable><![CDATA[]]></mysqlenable>
+	<mysqldisable><![CDATA[]]></mysqldisable>
+	<mysqldelete><![CDATA[]]></mysqldelete>
+	<file name="engine/engine.php">
+		<operation action="after">
+			<searchcode><![CDATA[switch ( $do ) {]]></searchcode>
+			<replacecode><![CDATA[case "addcomm" :
+	include (DLEPlugins::Check(ENGINE_DIR . '/modules/page_addcomments.php'));
+	break;]]></replacecode>
+		</operation>
+	</file>
+	<file name="engine/ajax/addcomments.php">
+		<operation action="replace">
+			<searchcode><![CDATA[echo $tpl->result['content'];]]></searchcode>
+			<replacecode><![CDATA[if( intval($_POST['redirect_idcomm']) ) echo "comments-tree-item-{$added_comments_id}";
+else echo $tpl->result['content'];]]></replacecode>
+		</operation>
+	</file>
+	<file name="engine/inc/options.php">
+		<operation action="after">
+			<searchcode><![CDATA[showRow( $lang['opt_sys_wdcom'], $lang['opt_sys_wdscomd'], makeDropDown( array ("-1" => $lang['editor_none'], "0" => $lang['editor_def'], "1" => "FroalaEditor (WYSIWYG)", "2" => "TinyMCE (WYSIWYG)" ), "save_con[allow_comments_wysiwyg]", "{$config['allow_comments_wysiwyg']}" ) );]]></searchcode>
+			<replacecode><![CDATA[showRow( 'Добавление комментариев на отдельной странице', 'Если включено то вместо формы добавления комментариев будет ссылка на отдельную страницу.<br>Откуда пользователь будет перенаправлен обратно в новость.', makeCheckBox( "save_con[other_page_addcomments]", "{$config['other_page_addcomments']}" ) );]]></replacecode>
+		</operation>
+		<operation action="after">
+			<searchcode><![CDATA[$save_con['allow_comments_rating'] = intval($save_con['allow_comments_rating']);]]></searchcode>
+			<replacecode><![CDATA[$save_con['other_page_addcomments'] = intval($save_con['other_page_addcomments']);]]></replacecode>
+		</operation>
+	</file>
+	<file name="engine/modules/show.full.php">
+		<operation action="after">
+			<searchcode><![CDATA[if( $user_group[$member_id['user_group']]['allow_addc'] AND $config['allow_comments'] AND $allow_add AND ($member_id['restricted'] != 2 AND $member_id['restricted'] != 3) ) {]]></searchcode>
+			<replacecode><![CDATA[if( !$config['other_page_addcomments'] ) {]]></replacecode>
+		</operation>
+		<operation action="before">
+			<searchcode><![CDATA[} elseif( $member_id['restricted'] ) {]]></searchcode>
+			<replacecode><![CDATA[} else {
+  
+	if ( strpos ( $tpl->result['content'], "<!--dleaddcomments-->" ) !== false ) {
+
+		$tpl->result['content'] = str_replace ( "<!--dleaddcomments-->", '<a href="'.$PHP_SELF.'?do=addcomm&newsid='.$news_id.'" style="padding: 20px;background: #FFF;position: relative;margin-bottom: 10px;display: block;text-align: center;"><b>Добавить комментарий</b></a>', $tpl->result['content'] );
+
+	} else {
+
+		$tpl->result['content'] .= '<a href="'.$PHP_SELF.'?do=addcomm&newsid='.$news_id.'" style="padding: 20px;background: #FFF;position: relative;margin-bottom: 10px;display: block;text-align: center;"><b>Добавить комментарий</b></a>';
+
+	}
+
+}]]></replacecode>
+		</operation>
+	</file>
+</dleplugin>
