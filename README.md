@@ -6,4 +6,13 @@
  - {title} Выводит `Добавления комментария к новости: Заголовок новости`
  - После добавления комментария пользователя перенаправляет в новость.
 
-teramoune@gmail.com на всякий случай. Писать только на почту, сайты я не мониторю!
+### Donate
+Для материальной благодарности.
+
+<img src="https://qiwi.com/favicon.ico" width="16" height="16"> [Qiwi](https://qiwi.me/teramoune)
+
+<img src="https://www.webmoney.ru/img/logo-wm-sat-small.png" width="139" height="34">
+
+ - Z990082286464
+ 
+teramoune@gmail.com на всякий случай.
