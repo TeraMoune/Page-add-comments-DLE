@@ -14,5 +14,6 @@
 <img src="https://www.webmoney.ru/img/logo-wm-sat-small.png" width="139" height="34">
 
  - Z990082286464
+ - 4100115063692304 (yandex)
  
 teramoune@gmail.com на всякий случай.
